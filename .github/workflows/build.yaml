@@ -1,0 +1,30 @@
+name: sample workflow
+on:
+  workflow_dispatch:
+    inputs:
+      image_name:
+        type: string
+        required: true
+        description: "enter the image name to build & deploy"
+env:
+  image_name: ${{ inputs.image_name }}
+  scan_id: 212132-6849318e-7i2qei8
+
+jobs:
+  checkout:
+    name: git repo checkout
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: modify config
+        run: |
+          mkdir test
+          cd test
+          cp ../* .
+          ls -la
+          pwd
+  # build:
+
+  # deploy:
+  
