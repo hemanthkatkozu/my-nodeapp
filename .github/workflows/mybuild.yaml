@@ -1,4 +1,4 @@
-name: sample workflow
+name: my sample workflow
 on:
   workflow_dispatch:
     inputs:
@@ -21,7 +21,7 @@ jobs:
         run: |
           mkdir test
           cd test
-          cp -r ../* .
+          cp  ../package.json .
           ls -la
           pwd
   # build:
