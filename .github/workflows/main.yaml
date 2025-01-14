@@ -10,9 +10,9 @@ on:
         required: true
         type: string
   
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
 env:
   majorversion: ${{ inputs.majorversion }}
   minorversion: ${{ inputs.minorversion }}
