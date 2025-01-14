@@ -33,7 +33,7 @@ jobs:
     steps:
       - name: printing inputs used
         run: |
-          echo "current inputs used are \nrunner: ${{needs.variables.outputs.runner }} \nmajorversion: ${{needs.variables.outputs.majorversion }} \nminorversion: ${{needs.variables.outputs.minorversion }}" >> $GITHUB_STEP_SUMMARY
+          echo "current inputs used are \n runner: ${{needs.variables.outputs.runner }} \n majorversion: ${{needs.variables.outputs.majorversion }} \n minorversion: ${{needs.variables.outputs.minorversion }}" >> $GITHUB_STEP_SUMMARY
     
     
   generate-build-version:
