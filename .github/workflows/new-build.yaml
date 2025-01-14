@@ -1,4 +1,4 @@
-name: My-application-CI
+name: CI workflow
 
 on:
   workflow_dispatch:
