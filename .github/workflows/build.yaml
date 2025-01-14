@@ -39,7 +39,7 @@ jobs:
   generate-build-version:
     name: generate-build-version
     needs: [variables,inputs-used]
-    uses: hemanthkatkozu/shared-workflows/tree/master/.github/workflows/generating-build-version.yaml@master
+    uses: hemanthkatkozu/shared-workflows/.github/workflows/generating-build-version.yaml@master
     with:
       runner: ${{needs.variables.outputs.runner }}
       major_version: ${{needs.variables.outputs.majorversion }}
