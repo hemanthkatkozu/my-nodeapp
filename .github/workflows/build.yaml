@@ -39,9 +39,7 @@ jobs:
           echo "| runner | ${{needs.variables.outputs.runner }} |" >> $GITHUB_STEP_SUMMARY
           echo "| majorversion | ${{needs.variables.outputs.majorversion }} |" >> $GITHUB_STEP_SUMMARY
           echo "| minorversion | ${{needs.variables.outputs.minorversion }} |" >> $GITHUB_STEP_SUMMARY
-          
-    
-    
+         
   generate-build-version:
     name: generate-build-version
     needs: [variables,inputs-used]
@@ -51,34 +49,28 @@ jobs:
       major_version: ${{needs.variables.outputs.majorversion }}
       minor_version: ${{needs.variables.outputs.minorversion }}
     secrets: inherit
+
+  install-dependencies:
+    name: install-dependencies
+    needs: [variables,generate-build-version]
+    uses: hemanthkatkozu/shared-workflows/.github/workflows/build-artifact.yaml@master
+    with:
+      runner: ${{needs.variables.outputs.runner }}
+    secrets: inherit
+  
+  test-cases:
+    name: test-cases
+    needs: [variables,install-dependencies]
+    uses: hemanthkatkozu/shared-workflows/.github/workflows/testcases.yaml@master
+    with:
+      runner: ${{needs.variables.outputs.runner }}
+    secrets: inherit
     
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v4
-
-  #   - name: Set up Node.js
-  #     uses: actions/setup-node@v3
-  #     with:
-  #       node-version: '16'
-
-  #   - name: Install dependencies
-  #     run: npm install
-
-  #   - name: Run tests
-  #     run: npm run test
-      
-  #   - name: Login to GitHub Container Registry
-  #     uses: docker/login-action@v3
-  #     with:
-  #       # registry: ghcr.io
-  #       username: ${{ secrets.DOCKER_USER }}
-  #       password: ${{ secrets.DOCKER_TOKEN }}
-
-  #   - name: Build and push Docker image
-  #     uses: docker/build-push-action@v4
-  #     with:
-  #       context: .
-  #       push: true
-  #       tags: ${{ secrets.DOCKER_USER }}/mynode-app:v${{ env.majorversion }}.${{ env.minorversion }}.${{  github.run_number }}
+  image-build-push:
+    name: image-build-push
+    needs: [variables,generate-build-version,test-cases]
+    uses: hemanthkatkozu/shared-workflows/.github/workflows/image_build_push.yaml@master
+    with:
+      runner: ${{needs.variables.outputs.runner }}
+      image_version: ${{needs.generate-build-version.outputs.image_version }}
+    secrets: inherit
