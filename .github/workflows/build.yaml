@@ -1,0 +1,78 @@
+name: My-application-CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      majorversion:
+        required: true
+        type: string
+      minorversion:
+        required: true
+        type: string
+
+env:
+  runner: "ubuntu-latest"
+  majorversion: ${{ inputs.majorversion }}
+  minorversion: ${{ inputs.minorversion }}
+  
+jobs:
+  variables:
+    name: exposing variables used
+    runs-on: ubuntu-latest
+    outputs:
+      runner: ${{ env.runner }}
+      majorversion: ${{ env.majorversion }}
+      minorversion: ${{ env.minorversion }}
+    steps:
+      - run: echo "exposing variables"
+      
+  inputs-used:
+    name: printing current inputs used
+    needs: [variables]
+    runs-on: ubuntu-latest
+    steps:
+      - name: printing inputs used
+        run: |
+          echo "current inputs used are \nrunner: ${{needs.variables.outputs.runner }} \nmajorversion: ${{needs.variables.outputs.majorversion }} \nminorversion: ${{needs.variables.outputs.minorversion }}" >> $GITHUB_STEP_SUMMARY
+    
+    
+  generate-build-version:
+    name: generate-build-version
+    needs: [variables,inputs-used]
+    uses: hemanthkatkozu/shared-workflows/tree/master/.github/workflows/generating-build-version.yaml@master
+    with:
+      runner: ${{needs.variables.outputs.runner }}
+      major_version: ${{needs.variables.outputs.majorversion }}
+      minor_version: ${{needs.variables.outputs.minorversion }}
+    secrets: inherit
+    
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v4
+
+  #   - name: Set up Node.js
+  #     uses: actions/setup-node@v3
+  #     with:
+  #       node-version: '16'
+
+  #   - name: Install dependencies
+  #     run: npm install
+
+  #   - name: Run tests
+  #     run: npm run test
+      
+  #   - name: Login to GitHub Container Registry
+  #     uses: docker/login-action@v3
+  #     with:
+  #       # registry: ghcr.io
+  #       username: ${{ secrets.DOCKER_USER }}
+  #       password: ${{ secrets.DOCKER_TOKEN }}
+
+  #   - name: Build and push Docker image
+  #     uses: docker/build-push-action@v4
+  #     with:
+  #       context: .
+  #       push: true
+  #       tags: ${{ secrets.DOCKER_USER }}/mynode-app:v${{ env.majorversion }}.${{ env.minorversion }}.${{  github.run_number }}
