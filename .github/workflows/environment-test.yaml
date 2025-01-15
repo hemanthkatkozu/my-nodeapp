@@ -1,6 +1,9 @@
 name: env test
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
 
 jobs:
   checkout:
@@ -9,17 +12,20 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - name: heading to dev deployment
-        run: echo "heading to dev deployment"
-  deploy-to-dev-env:
-    name: deploy to dev
-    needs: checkout
-    runs-on: ubuntu-latest
-    environment:
-      name: dev
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: heading to dev deployment
-        run: echo "deployment successfull" >> $GITHUB_STEP_SUMMARY
+      - name: check file path
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > changed_files.txt
+          cat changed_files.txt
+        
+  # deploy-to-dev-env:
+  #   name: deploy to dev
+  #   needs: checkout
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: dev
+  #   steps:
+  #     - name: checkout
+  #       uses: actions/checkout@v4
+  #     - name: heading to dev deployment
+  #       run: echo "deployment successfull" >> $GITHUB_STEP_SUMMARY
         
