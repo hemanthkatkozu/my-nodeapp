@@ -1,0 +1,24 @@
+name: env test
+on:
+  workflow_dispatch:
+
+jobs:
+  checkout:
+    name: checkout
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: heading to dev deployment
+        run: echo "heading to dev deployment"
+  deploy-to-dev-env:
+    name: deploy to dev
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: heading to dev deployment
+        run: echo "deployment successfull" >> $GITHUB_STEP_SUMMARY
+        
