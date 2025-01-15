@@ -13,6 +13,7 @@ jobs:
         run: echo "heading to dev deployment"
   deploy-to-dev-env:
     name: deploy to dev
+    needs: checkout
     runs-on: ubuntu-latest
     environment:
       name: dev
