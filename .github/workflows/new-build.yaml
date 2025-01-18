@@ -93,7 +93,7 @@ jobs:
           
       - name: update-manifest
         run: |
-          yq e -i '.spec.template.spec[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
+          yq eval -i '.spec.template.spec.containers[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
           
       - name: push changes & deploy
         run: |
@@ -121,7 +121,7 @@ jobs:
           
       - name: update-manifest
         run: |
-          yq e -i '.spec.template.spec[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
+          yq eval -i '.spec.template.spec.containers[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
           
       - name: push changes & deploy
         run: |
@@ -149,7 +149,7 @@ jobs:
           
       - name: update-manifest
         run: |
-          yq e -i '.spec.template.spec[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
+          yq eval -i '.spec.template.spec.containers[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
           
       - name: push changes & deploy
         run: |
@@ -177,7 +177,7 @@ jobs:
           
       - name: update-manifest
         run: |
-          yq e -i '.spec.template.spec[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
+          yq eval -i '.spec.template.spec.containers[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
           
       - name: push changes & deploy
         run: |
