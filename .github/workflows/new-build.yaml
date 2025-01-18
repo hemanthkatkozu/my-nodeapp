@@ -74,3 +74,112 @@ jobs:
       runner: ${{needs.variables.outputs.runner }}
       image_version: ${{needs.generate-build-version.outputs.image_version }}
     secrets: inherit
+    
+  deploy-to-dev:
+    name: deploy-to-dev
+    needs: [variables,generate-build-version,image-build-push]
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    steps:
+      - name: Set up yq
+        uses: frenck/action-setup-yq@v1
+        
+      - name: checkout CD repo
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          
+      - name: update-manifest
+        run: |
+          yq e -i '.spec.template.spec[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
+          
+      - name: push changes & deploy
+        run: |
+          git config --global user.name "hemanth"
+          git config --global user.email "hemanthkatkozu@gmail.com"
+          git add .
+          git commit -m "updated the build version to ${{needs.generate-build-version.outputs.image_version }}"
+          git push origin dev
+          
+  deploy-to-qa: 
+    name: deploy-to-qa
+    needs: [variables,generate-build-version,image-build-push]
+    runs-on: ubuntu-latest
+    environment:
+      name: qa
+    steps:
+      - name: Set up yq
+        uses: frenck/action-setup-yq@v1
+        
+      - name: checkout CD repo
+        uses: actions/checkout@v4
+        with:
+          ref: qa
+          
+      - name: update-manifest
+        run: |
+          yq e -i '.spec.template.spec[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
+          
+      - name: push changes & deploy
+        run: |
+          git config --global user.name "hemanth"
+          git config --global user.email "hemanthkatkozu@gmail.com"
+          git add .
+          git commit -m "updated the build version to ${{needs.generate-build-version.outputs.image_version }}"
+          git push origin qa
+          
+  deploy-to-perf: 
+    name: deploy-to-perf
+    needs: [variables,generate-build-version,image-build-push]
+    runs-on: ubuntu-latest
+    environment:
+      name: perf
+    steps:
+      - name: Set up yq
+        uses: frenck/action-setup-yq@v1
+        
+      - name: checkout CD repo
+        uses: actions/checkout@v4
+        with:
+          ref: perf
+          
+      - name: update-manifest
+        run: |
+          yq e -i '.spec.template.spec[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
+          
+      - name: push changes & deploy
+        run: |
+          git config --global user.name "hemanth"
+          git config --global user.email "hemanthkatkozu@gmail.com"
+          git add .
+          git commit -m "updated the build version to ${{needs.generate-build-version.outputs.image_version }}"
+          git push origin perf
+          
+  deploy-to-uat: 
+    name: deploy-to-uat
+    needs: [variables,generate-build-version,image-build-push]
+    runs-on: ubuntu-latest
+    environment:
+      name: uat
+    steps:
+      - name: Set up yq
+        uses: frenck/action-setup-yq@v1
+        
+      - name: checkout CD repo
+        uses: actions/checkout@v4
+        with:
+          ref: uat
+          
+      - name: update-manifest
+        run: |
+          yq e -i '.spec.template.spec[].image = "hemanth1211/mynode-app:${{needs.generate-build-version.outputs.image_version }}"' my-nodeapp/deployment.yaml
+          
+      - name: push changes & deploy
+        run: |
+          git config --global user.name "hemanth"
+          git config --global user.email "hemanthkatkozu@gmail.com"
+          git add .
+          git commit -m "updated the build version to ${{needs.generate-build-version.outputs.image_version }}"
+          git push origin uat
+        
