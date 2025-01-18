@@ -90,6 +90,7 @@ jobs:
         with:
           repository: hemanthkatkozu/my-nodeapp-CD
           ref: dev
+          token: ${{ secrets.MY_PAT }}
           
       - name: update-manifest
         run: |
@@ -118,6 +119,7 @@ jobs:
         with:
           repository: hemanthkatkozu/my-nodeapp-CD
           ref: qa
+          token: ${{ secrets.MY_PAT }}
           
       - name: update-manifest
         run: |
@@ -146,6 +148,7 @@ jobs:
         with:
           repository: hemanthkatkozu/my-nodeapp-CD
           ref: perf
+          token: ${{ secrets.MY_PAT }}
           
       - name: update-manifest
         run: |
@@ -174,6 +177,7 @@ jobs:
         with:
           repository: hemanthkatkozu/my-nodeapp-CD
           ref: uat
+          token: ${{ secrets.MY_PAT }}
           
       - name: update-manifest
         run: |
